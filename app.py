@@ -183,19 +183,44 @@ def page_accueil():
     st.markdown('<div class="disclaimer">🩺 <strong>Important :</strong> le résultat fourni par le modèle est une estimation algorithmique. Il ne remplace pas l’évaluation d’un professionnel de santé.</div>', unsafe_allow_html=True)
 
 def page_apropos():
-    st.markdown('<div class="title">📖 À propos du projet</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Présentation du projet.</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="title">📖 À propos du projet</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="subtitle">Présentation du projet.</div>',
+        unsafe_allow_html=True
+    )
 
     pdf_files = list(BASE_DIR.glob("*.pdf")) + list(ASSETS_DIR.glob("*.pdf"))
+
     if pdf_files:
         pdf_path = pdf_files[0]
-        st.success(f"Document chargé : {pdf_path.name}")
-        with open(pdf_path, "rb") as file:
-            encoded = base64.b64encode(file.read()).decode("utf-8")
-        st.markdown(f'<iframe src="data:application/pdf;base64,{encoded}" width="100%" height="900" style="border:none;border-radius:15px;"></iframe>', unsafe_allow_html=True)
-    else:
-        st.info("Aucun PDF trouvé. Place ton document PDF dans le dossier du projet ou dans assets.")
 
+        st.success(f"Document disponible : {pdf_path.name}")
+
+        with open(pdf_path, "rb") as file:
+            pdf_bytes = file.read()
+
+        st.markdown("### 📄 Document du projet")
+
+        # Affichage du PDF dans Streamlit
+        st.pdf(pdf_bytes)
+
+        st.download_button(
+            label="📥 Télécharger le document PDF",
+            data=pdf_bytes,
+            file_name=pdf_path.name,
+            mime="application/pdf",
+            use_container_width=True
+        )
+
+    else:
+        st.info(
+            "Aucun PDF trouvé. Place ton document PDF dans le dossier "
+            "du projet ou dans assets."
+        )
 def page_documentation():
     st.markdown('<div class="title">📚 Documentation</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Fonctionnement de la plateforme.</div>', unsafe_allow_html=True)
