@@ -1,0 +1,12 @@
+.ipynb_checkpoints/
+*.ipynb
+*.pub
+*.txt
+__pycache__/
+*.pyc
+Fichier/
+findstr
+scaler.pkl
+scaler_final.pkl
+scaler_risque_maternel.pkl
+random_forest_model.pkl
